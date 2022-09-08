@@ -2,7 +2,7 @@
 A script written in python to download sequences and articles from NCBI databases.
 
 <center>
-<img src="https://user-images.githubusercontent.com/89016694/188659123-232119ce-5962-401b-afc9-2ac09b3d86c1.png" width="330" height="400">
+<img src="https://user-images.githubusercontent.com/89016694/189245479-fe6dfc94-7f29-49f0-84ec-db928c59d6e0.png" width="330" height="400">
 </center>
 
 ---
