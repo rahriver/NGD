@@ -82,7 +82,3 @@ def run():
         else:
             print("Please enter a valid value!\n")
             continue
-
-
-gene_info = Entrez.efetch(db="gene", id="9575", rettype="fasta")
-print(gene_info.read())
