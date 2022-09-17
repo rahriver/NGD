@@ -49,10 +49,15 @@ def get_gene_info():
     elif opt == "2":
         access_num = input('Accession Number: ')
         wait('nucleotide database')
-        gene_seq_fasta = Entrez.efetch(db="nucleotide", id=access_num, rettype="fasta", retmode="text")
-        with open("gene.fasta", "w") as file:
-            file.write(gene_seq_fasta.read())
-        return "FASTA file saved as gene.fasta", finished()
+
+        try:
+            gene_seq_fasta = Entrez.efetch(db="nucleotide", id=access_num, rettype="fasta", retmode="text")
+            with open("gene.fasta", "w") as file:
+                file.write(gene_seq_fasta.read())
+            return "FASTA file saved as gene.fasta", finished()
+        
+        except Exception as e:
+            return "Invalid accession number!"+"\n"
 
     elif opt == "3":
         access_num = input('Accession Number: ')
@@ -63,7 +68,7 @@ def get_gene_info():
         return "Genebank file saved as gene.gb", finished()
 
 # <---------- Initiate --------->
-def run():
+def main():
 
     while True:
         initiate = input("What do you want to do?\n1: Search in pubmed\n2: Search for a gene\n3: Exit\n\n-> ")
@@ -82,3 +87,6 @@ def run():
         else:
             print("Please enter a valid value!\n")
             continue
+
+if __name__ == "__main__":
+    main()
