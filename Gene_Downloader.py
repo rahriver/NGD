@@ -35,7 +35,7 @@ def get_pubmed(query):
 
 def get_gene_info():
 
-    opt = input("Select an option:\n(1) Gene Info\n(2) FASTA\n(3) Genebank\n\n-> ").lower()
+    opt = input("Select an option:\n(1) Gene Info\n(2) FASTA File\n(3) Genebank File\n\n-> ").lower()
     if opt == "1":
         gene_name = input("Enter a gene name: ")
         wait("gene database")
