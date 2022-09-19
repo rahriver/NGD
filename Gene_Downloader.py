@@ -57,7 +57,7 @@ def translator_gb(file_name):
 
 def get_gene_info():
 
-    opt = input("Select an option:\n(1) Gene Info\n(2) FASTA File\n(3) Genebank File\n(4) Translate\n\n-> ").lower()
+    opt = input("Select an option:\n(1) Gene Info\n(2) FASTA File\n(3) Genebank File\n(4) Translate\n(5) Transcribe(RNA)\n\n-> ").lower()
     if opt == "1":
         gene_name = input("Enter a gene name: ")
         wait("gene database")
@@ -109,6 +109,28 @@ def get_gene_info():
                 translator_gb(file_name)
 
         elif translate == "n":
+            pass
+
+    elif opt == "5":
+        transcribe = input("Do you want to transcribe the FASTA file? (y/n)\n-> ").lower()
+
+        if transcribe == "y":
+            file_format = input("Enter the file format: (fasta/gb)\n-> ").lower()
+            file_name = input("Enter the file name: ")
+
+            if file_format == "fasta":
+                for seq_record in SeqIO.parse(file_name, "fasta"):
+                    with open("transcribed.txt", "w") as file:
+                        file.write(str(seq_record.seq.transcribe()))
+                return "Transcribed file saved as transcribed.txt"
+
+            elif file_format == "gb":
+                for seq_record in SeqIO.parse(file_name, "genbank"):
+                    with open("transcribed.txt", "w") as file:
+                        file.write(str(seq_record.seq.transcribe()))
+                return "Transcribed file saved as transcribed.txt"
+        
+        elif transcribe == "n":
             pass
 
     else:
