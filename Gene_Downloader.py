@@ -2,6 +2,7 @@ import inspect
 from Bio import Entrez
 from Bio import Medline
 from Bio import SeqIO
+from Bio.Seq import Seq
 import Bio
 import pandas as pd
 import re
@@ -10,10 +11,12 @@ from rich.console import Console
 
 # <---------- Visual --------->
 def wait(database="database"):
+
     console = Console()
     console.log(f"[bold cyan]Searching {database}...")
 
 def finished():
+
     console = Console()
     console.log("[bold green]Finished!")
 
@@ -33,9 +36,28 @@ def get_pubmed(query):
     query_key = post["QueryKey"]
     return post, finished()
 
+def translator_fasta(file_name):
+
+    for seq_record in SeqIO.parse(file_name, "fasta"):
+        with open("translated.txt", "w") as file:
+            file.write(str(seq_record.seq.translate()))
+    return "Translated file saved as translated.txt"
+
+def translator_gb(file_name):
+
+    try:
+        for seq_record in SeqIO.parse(file_name, "genbank"):
+            with open("translated.txt", "w") as file:
+                file.write(str(seq_record.seq.translate()))
+        return "Translated file saved as translated.txt"
+
+    except Exception as e:
+        print(e)
+        return "Translated file saved as translated.txt"
+
 def get_gene_info():
 
-    opt = input("Select an option:\n(1) Gene Info\n(2) FASTA File\n(3) Genebank File\n\n-> ").lower()
+    opt = input("Select an option:\n(1) Gene Info\n(2) FASTA File\n(3) Genebank File\n(4) Translate\n\n-> ").lower()
     if opt == "1":
         gene_name = input("Enter a gene name: ")
         wait("gene database")
@@ -54,7 +76,8 @@ def get_gene_info():
             gene_seq_fasta = Entrez.efetch(db="nucleotide", id=access_num, rettype="fasta", retmode="text")
             with open("gene.fasta", "w") as file:
                 file.write(gene_seq_fasta.read())
-            return "FASTA file saved as gene.fasta", finished()
+            finished()
+            print("FASTA file saved as gene.fasta")
         
         except Exception as e:
             return "Invalid accession number!"+"\n"
@@ -62,10 +85,34 @@ def get_gene_info():
     elif opt == "3":
         access_num = input('Accession Number: ')
         wait('nucleotide database')
-        gene_seq_gb = Entrez.efetch(db="nucleotide", id=access_num, rettype="gb", retmode="text")
-        with open("gene.gb", "w") as file:
-            file.write(gene_seq_gb.read())
-        return "Genebank file saved as gene.gb", finished()
+
+        try:
+            gene_seq_gb = Entrez.efetch(db="nucleotide", id=access_num, rettype="gb", retmode="text")
+            with open("gene.gb", "w") as file:
+                file.write(gene_seq_gb.read())
+            return "Genebank file saved as gene.gb", finished()
+
+        except Exception as e:
+            return "Invalid accession number!"+"\n"
+
+    elif opt == "4":
+        translate = input("Do you want to translate the FASTA file? (y/n)\n-> ").lower()
+
+        if translate == "y":
+            file_format = input("Enter the file format: (fasta/gb)\n-> ").lower()
+
+            if file_format == "fasta":
+                translator_fasta("gene.fasta")
+
+            elif file_format == "gb":
+                translator_gb("gene.gb")
+
+        elif translate == "n":
+            pass
+
+    else:
+        print("Please enter a valid value!\n")
+        return get_gene_info()
 
 # <---------- Initiate --------->
 def main():
