@@ -100,12 +100,13 @@ def get_gene_info():
 
         if translate == "y":
             file_format = input("Enter the file format: (fasta/gb)\n-> ").lower()
+            file_name = input("Enter the file name: ")
 
             if file_format == "fasta":
-                translator_fasta("gene.fasta")
+                translator_fasta(file_name)
 
             elif file_format == "gb":
-                translator_gb("gene.gb")
+                translator_gb(file_name)
 
         elif translate == "n":
             pass
