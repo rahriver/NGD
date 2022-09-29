@@ -1,4 +1,4 @@
-- # Description
+# **NGT: NCBI Genome Toolkit**
 A script written in python to download sequences and articles from NCBI databases.
 
 <center>
